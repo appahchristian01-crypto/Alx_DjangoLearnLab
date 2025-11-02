@@ -1,12 +1,7 @@
-books = Book.objects.all()
-print(books)
-# Expected Output: <QuerySet [<Book: 1984 by George Orwell (1949)>]>
+# Retrieve Book
 
-book = books[0]
-print(book.title)
-print(book.author)
-print(book.publication_year)
-# Expected Output:
-# 1984
-# George Orwell
-# 1949
+```python
+from bookshelf. models import Book
+book = Book.objects.get(title="1984")
+book
+# Output: <Book: 1984 by George Orwell (1949)>
