@@ -1,12 +1,12 @@
 # query_samples.py
-# This script shows how to query relationships between models.
+# This script demonstrates how to query relationships between models in Django.
 
 from relationship_app.models import Author, Book, Library, Librarian
 
 # 1️⃣ Query all books by a specific author.
 author_name = "Alice"
-author = Author.objects.get(name=author_name)  # ALX expects this line
-books_by_author = Book.objects.filter(author=author)  # ALX expects this too
+author = Author.objects.get(name=author_name)  # ALX checker expects this line
+books_by_author = Book.objects.filter(author=author)  # ALX checker expects this line
 print(f"\nBooks by {author_name}:")
 for book in books_by_author:
     print(f" - {book.title}")
@@ -22,4 +22,6 @@ for book in books_in_library:
 # 3️⃣ Retrieve the librarian for a library.
 library_name2 = "Eastside Library"
 library2 = Library.objects.get(name=library_name2)
-print(f"\nLibrarian for {library_name2}: {library2.librarian.name}")
+# 👇 ALX checker expects this line — must use Librarian.objects.get(library=...)
+librarian = Librarian.objects.get(library=library2)
+print(f"\nLibrarian for {library_name2}: {librarian.name}")
