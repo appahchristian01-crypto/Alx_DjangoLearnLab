@@ -51,8 +51,9 @@ class CustomUser(AbstractUser):
 # Book Model (required by ALX checker)
 # ------------------------------------
 class Book(models.Model):
-    title = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)
+    title = models.CharField(max_length=250)
+    author = models.CharField(max_length=250)
 
     def __str__(self):
         return f"{self.title} by {self.author}"
+
