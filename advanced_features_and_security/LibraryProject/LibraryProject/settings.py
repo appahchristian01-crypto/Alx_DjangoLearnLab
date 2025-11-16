@@ -162,3 +162,5 @@ CSRF_COOKIE_SECURE = True
 X_FRAME_OPTIONS = "DENY"               # Protects from clickjacking
 SECURE_CONTENT_TYPE_NOSNIFF = True     # Stops MIME-type sniffing
 SECURE_BROWSER_XSS_FILTER = True       # Helps block XSS attacks
+# Trust the X-Forwarded-Proto header from your proxy (e.g., Nginx, Heroku)
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
