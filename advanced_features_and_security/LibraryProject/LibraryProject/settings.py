@@ -141,3 +141,24 @@ CSP_DEFAULT_SRC = ("'self'",)
 CSP_SCRIPT_SRC = ("'self'",)
 CSP_STYLE_SRC = ("'self'", "'unsafe-inline'")
 
+# ------------------------------
+# HTTPS SECURITY SETTINGS
+# ------------------------------
+
+# 1. Redirect all HTTP to HTTPS
+SECURE_SSL_REDIRECT = True  # Forces https://
+
+# 2. HTTP Strict Transport Security (HSTS)
+# Tells browsers: "Always use HTTPS for this site"
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# 3. Secure cookies (only sent over HTTPS)
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# 4. Extra browser protection
+X_FRAME_OPTIONS = "DENY"               # Protects from clickjacking
+SECURE_CONTENT_TYPE_NOSNIFF = True     # Stops MIME-type sniffing
+SECURE_BROWSER_XSS_FILTER = True       # Helps block XSS attacks
