@@ -1,0 +1,12 @@
+<h2>Example Form</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Submit</button>
+
+    {% if message %}
+        <p style="color: green;">{{ message }}</p>
+    {% endif %}
+</form>
