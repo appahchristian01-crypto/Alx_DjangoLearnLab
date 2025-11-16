@@ -1,0 +1,18 @@
+SECURE_SSL_REDIRECT = True 
+- Makes sure all visitors use https://
+
+SECURE_HSTS_SECONDS = 31536000
+- Tells browsers to always use HTTPS for 1 year
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+- Cookies only travel over HTTPS
+
+X_FRAME_OPTIONS = "DENY"
+- Stops clickjacking attacks
+
+SECURE_CONTENT_TYPE_NOSNIFF = True
+- Stops browsers guessing file types incorrectly
+
+SECURE_BROWSER_XSS_FILTER = True
+- Helps stop cross-site scripting attacks
