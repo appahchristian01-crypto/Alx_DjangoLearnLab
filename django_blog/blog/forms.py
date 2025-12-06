@@ -10,11 +10,11 @@ from taggit.forms import TagWidget  # <-- Make sure this is imported
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags']  # <-- Add 'tags' here
+        fields = ['title', 'content', 'tags']
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Enter title here'}),
             'content': forms.Textarea(attrs={'rows': 8, 'placeholder': 'Write your post...'}),
-            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),  # <-- TagWidget
+            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),  # TagWidget correctly included
         }
 
 
@@ -31,5 +31,6 @@ class CommentForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
-        if not content or len(content.str
-
+        if not content or len(content.strip()) == 0:
+            raise forms.ValidationError("Comment cannot be empty.")
+        return content
