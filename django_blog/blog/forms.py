@@ -2,19 +2,27 @@ from django import forms
 from .models import Post, Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from taggit.forms import TagWidget  # <-- Make sure this is imported
+from taggit.forms import TagWidget   # <-- REQUIRED for tagging functionality
+
 
 # -----------------------------
-# Post Form
+# Post Form (with TagWidget)
 # -----------------------------
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']
         widgets = {
-            'title': forms.TextInput(attrs={'placeholder': 'Enter title here'}),
-            'content': forms.Textarea(attrs={'rows': 8, 'placeholder': 'Write your post...'}),
-            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),  # TagWidget correctly included
+            'title': forms.TextInput(attrs={
+                'placeholder': 'Enter title here'
+            }),
+            'content': forms.Textarea(attrs={
+                'rows': 8,
+                'placeholder': 'Write your post...'
+            }),
+            'tags': TagWidget(attrs={
+                'placeholder': 'Add tags separated by commas'
+            }),  # <-- REQUIRED by the task
         }
 
 
@@ -26,7 +34,10 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
         widgets = {
-            'content': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Write your comment here...'})
+            'content': forms.Textarea(attrs={
+                'rows': 3,
+                'placeholder': 'Write your comment here...'
+            })
         }
 
     def clean_content(self):
