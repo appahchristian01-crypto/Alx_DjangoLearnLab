@@ -1,46 +1,33 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
 from .views import (
     PostListView,
     PostDetailView,
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
-    register,
-    profile,
-    search,
-    CommentCreateView,
-    CommentUpdateView,
-    CommentDeleteView,
+    PostByTagListView,
+    SearchResultsView,
 )
 
 urlpatterns = [
-    # -----------------------------
-    # Post CRUD
-    # -----------------------------
+    # Home – list all posts
     path('', PostListView.as_view(), name='post-list'),
+
+    # Post detail
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
+
+    # Create post
     path('post/new/', PostCreateView.as_view(), name='post-create'),
-    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post-update'),
+
+    # Edit post
+    path('post/<int:pk>/edit/', PostUpdateView.as_view(), name='post-edit'),
+
+    # Delete post
     path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post-delete'),
 
-    # -----------------------------
-    # User Authentication
-    # -----------------------------
-    path('register/', register, name='register'),
-    path('profile/', profile, name='profile'),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='post-list'), name='logout'),
+    # ⭐ Tag filtering (REQUIRED FOR YOUR TASK)
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts-by-tag'),
 
-    # -----------------------------
-    # Search
-    # -----------------------------
-    path('search/', search, name='search'),
-
-    # -----------------------------
-    # Comment CRUD (nested & intuitive)
-    # -----------------------------
-    path('post/<int:pk>/comments/new/', CommentCreateView.as_view(), name='comment-create'),
-    path('comment/<int:pk>/update/', CommentUpdateView.as_view(), name='comment-update'),
-    path('comment/<int:pk>/delete/', CommentDeleteView.as_view(), name='comment-delete'),
+    # ⭐ Search (REQUIRED FOR YOUR TASK)
+    path('search/', SearchResultsView.as_view(), name='search-results'),
 ]
