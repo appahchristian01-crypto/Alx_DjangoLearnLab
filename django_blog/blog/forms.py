@@ -2,7 +2,7 @@ from django import forms
 from .models import Post, Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from taggit.forms import TagWidget
+from taggit.forms import TagWidget  # <-- Make sure this is imported
 
 # -----------------------------
 # Post Form
@@ -10,12 +10,13 @@ from taggit.forms import TagWidget
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content', 'tags']  # include tags
+        fields = ['title', 'content', 'tags']  # <-- Add 'tags' here
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Enter title here'}),
             'content': forms.Textarea(attrs={'rows': 8, 'placeholder': 'Write your post...'}),
-            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),
+            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),  # <-- TagWidget
         }
+
 
 # -----------------------------
 # Comment Form
@@ -31,3 +32,4 @@ class CommentForm(forms.ModelForm):
     def clean_content(self):
         content = self.cleaned_data.get('content')
         if not content or len(content.str
+
