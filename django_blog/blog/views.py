@@ -10,7 +10,6 @@ from .forms import PostForm, CommentForm, RegisterForm
 # -----------------------------
 # Post Views
 # -----------------------------
-
 class PostListView(ListView):
     model = Post
     template_name = 'post_list.html'
@@ -48,41 +47,3 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def test_func(self):
         post = self.get_object()
-        return self.request.user == post.author
-
-# -----------------------------
-# User Registration
-# -----------------------------
-def register(request):
-    if request.method == 'POST':
-        form = RegisterForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Account created successfully! You can now log in.')
-            return redirect('login')
-    else:
-        form = RegisterForm()
-    return render(request, 'register.html', {'form': form})
-
-# -----------------------------
-# Profile View
-# -----------------------------
-@login_required
-def profile(request):
-    user = request.user
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        user.username = username
-        user.email = email
-        user.save()
-        messages.success(request, "Your profile has been updated!")
-        return redirect('profile')
-    return render(request, 'profile.html', {'user': user})
-
-# -----------------------------
-# Search View
-# -----------------------------
-def search(request):
-    query = request.GET.get('q', '')
-    results = Post.objects.filter(title__
