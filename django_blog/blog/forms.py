@@ -2,6 +2,7 @@ from django import forms
 from .models import Post, Comment
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from taggit.forms import TagWidget
 
 # -----------------------------
 # Post Form
@@ -30,3 +31,4 @@ class CommentForm(forms.ModelForm):
         content = self.cleaned_data.get('content')
         if not content or len(content.strip()) == 0:
             raise forms.ValidationError
+
