@@ -10,10 +10,11 @@ from taggit.forms import TagWidget
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ['title', 'content']  # Include 'tags' if you have a Tag model
+        fields = ['title', 'content', 'tags']  # include tags
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Enter title here'}),
             'content': forms.Textarea(attrs={'rows': 8, 'placeholder': 'Write your post...'}),
+            'tags': TagWidget(attrs={'placeholder': 'Add tags separated by commas'}),
         }
 
 # -----------------------------
@@ -29,6 +30,4 @@ class CommentForm(forms.ModelForm):
 
     def clean_content(self):
         content = self.cleaned_data.get('content')
-        if not content or len(content.strip()) == 0:
-            raise forms.ValidationError
-
+        if not content or len(content.str
