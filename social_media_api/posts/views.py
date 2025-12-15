@@ -3,7 +3,6 @@ from rest_framework.views import APIView
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 
 from .models import Post, Comment, Like
@@ -12,16 +11,10 @@ from .permissions import IsOwnerOrReadOnly
 from notifications.models import Notification
 
 
-# ------------------------
-# Pagination
-# ------------------------
 class PostPagination(PageNumberPagination):
     page_size = 5
 
 
-# ------------------------
-# Post CRUD
-# ------------------------
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
@@ -34,9 +27,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-# ------------------------
-# Comment CRUD
-# ------------------------
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by('-created_at')
     serializer_class = CommentSerializer
@@ -46,9 +36,6 @@ class CommentViewSet(viewsets.ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-# ------------------------
-# Feed View (ALX exact string)
-# ------------------------
 class FeedView(generics.GenericAPIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -60,13 +47,13 @@ class FeedView(generics.GenericAPIView):
 
 
 # ------------------------
-# Like Post
+# LIKE POST (ALX exact)
 # ------------------------
 class LikePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
 
         like, created = Like.objects.get_or_create(
             user=request.user,
@@ -74,31 +61,26 @@ class LikePostView(APIView):
         )
 
         if not created:
-            return Response(
-                {"detail": "You already liked this post"},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"detail": "Already liked"}, status=400)
 
-        # Notification
-        if post.author != request.user:
-            Notification.objects.create(
-                recipient=post.author,
-                actor=request.user,
-                verb="liked your post",
-                content_type=ContentType.objects.get_for_model(post),
-                object_id=post.id
-            )
+        Notification.objects.create(
+            recipient=post.author,
+            actor=request.user,
+            verb="liked your post",
+            content_type=ContentType.objects.get_for_model(post),
+            object_id=post.id
+        )
 
-        return Response({"detail": "Post liked"}, status=status.HTTP_201_CREATED)
+        return Response({"detail": "Post liked"}, status=201)
 
 
 # ------------------------
-# Unlike Post
+# UNLIKE POST (ALX exact)
 # ------------------------
 class UnlikePostView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request, pk):
-        post = get_object_or_404(Post, pk=pk)
+        post = generics.get_object_or_404(Post, pk=pk)
         Like.objects.filter(user=request.user, post=post).delete()
-        return Response({"detail": "Post unliked"}, status=status.HTTP_200_OK)
+        return Response({"detail": "Post unliked"}, status=200)
