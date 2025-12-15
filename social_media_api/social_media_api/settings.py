@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # Local
     'accounts',
+    'posts',
 ]
 
 
@@ -124,4 +125,5 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 # Custom User Model
+
 AUTH_USER_MODEL = 'accounts.User'
