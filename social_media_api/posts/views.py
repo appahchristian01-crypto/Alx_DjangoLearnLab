@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import SearchFilter
 from rest_framework.pagination import PageNumberPagination
@@ -12,7 +12,7 @@ class PostPagination(PageNumberPagination):
     page_size = 5
 
 
-class PostViewSet(ModelViewSet):
+class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-created_at')
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
@@ -24,7 +24,7 @@ class PostViewSet(ModelViewSet):
         serializer.save(author=self.request.user)
 
 
-class CommentViewSet(ModelViewSet):
+class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by('-created_at')
     serializer_class = CommentSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
